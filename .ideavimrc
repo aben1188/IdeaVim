@@ -195,7 +195,7 @@ set matchpairs+=<:>
     "inoremap <S-CR> <CR>
     "inoremap <CR> <ESC>
 
-    " i、v、c模式下，jj返回正常模式
+    " 插入模式下，jj返回普通模式
     inoremap jj    <ESC>
 
     " 插入模式下，复制上、下行对应列字符
