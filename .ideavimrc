@@ -1,0 +1,420 @@
+" 自动排版时的格式选项
+set formatoptions+=mM
+
+" Vim内部使用的编码
+set encoding=utf-8
+" 读文件时Vim自动侦测文件编码方式的编码列表项，
+" prc(等同于chinese)即Windows下的cp936、Unix下的euc-cn
+set fileencodings=ucs-bom,utf-8,prc,gb18030,taiwan,japan,korea,latin1
+"" 处理CJK东亚二义性宽度字符类 (East Asian Width Class Ambiguous)
+"" 例如，欧元符号、注册记号、版权记号、希腊字母、西里尔字母等等
+"if v:lang=~? '^/(zh/)/|/(ja/)/|/(ko/)'
+"    set ambiwidth=double
+"endif
+"" 解决console输出乱码
+"language messages zh_CN.utf-8
+
+filetype plugin indent on
+
+syntax on
+
+" Sets how many lines of history VIM has to remember
+set history=200
+
+" 文件在Vim外被改动时自动重新读入；但文件在外部被删除则不重新读入
+set autoread
+
+"" With a map leader it's possible to do extra key combinations
+"" like <LEADER>w saves the current file
+"let mapleader="<space>"
+
+" 光标上下移动时，屏幕上保留的最少屏幕行数
+set scrolloff=2
+
+" 增强模式命令行补全，按下wildchar(默认<Tab>)启动补全
+set wildmenu
+
+" Height of the command bar
+"set cmdheight=2
+" 命令行窗口高度(屏幕行数)
+set cmdwinheight=20
+
+" A buffer becomes hidden when it is abandoned
+set hidden
+
+" Configure backspace so it acts as it should act
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases 
+set smartcase
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" Show matching brackets when text indicator is over them
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set matchtime=1
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set timeoutlen=800
+
+" don't add two spaces after ., ?, !
+set nojoinspaces
+
+"" set g as default when substitute
+"set gdefault
+" 定义使用<C-A>和<C-X>(Windows下已分别改为<C-I>和<C-D>)命令加减数值时使用的
+" 基底：alpha，如果包含，单个字母会被递增和递减，这可用于使用字母索引的列表
+" a)、b)等等；octal，如果包含，零开始的数值认为是八进制，如在"007"上用C-A
+" 得到"010"；hex，如果包含，"0x"或"0X"开头的数值认为是十六进制，如在"0x100"
+" 上用C-X得到"0x0ff"。以1-9开始的数值总被认为是十进制的。octal与hex默认包含。
+set nrformats+=alpha
+
+" 高亮搜索关键字
+set hlsearch
+
+" 高亮显示光标所在行
+set cursorline
+" 高亮显示光标所在列【简写：设置 cuc；取消 nocuc】
+"set cursorcolumn
+
+" 添加行号
+set number
+" 添加相对行号
+set relativenumber
+
+" 下列移动命令移动光标时，不回到行首第一个非空白字符,
+" 而是尽量保持在同一列上(如果可能的话)：
+" C-B、C-F、C-D、C-U、G、H、M、L、gg、d、<<、>>、带计数的%、
+" 缓冲区改变命令(CTRL-^、:bnext、:bNext等)、:25、:+、:-等
+set nostartofline
+
+" 指定Vim窗口顶部每个标签页标签的内容 
+set guitablabel=%M\ %t
+
+" 使"*寄存器(系统剪贴板寄存器)等效于""无名寄存器(Vim默认寄存器)，
+" 以便与Windows共用剪贴板；不过，在实际使用过程中发现，
+" Vim中的删除操作可直接粘贴于其他程序，复制操作却不行；
+" 而其他程序中的复制、删除操作，则均可在Vim中直接粘贴。
+set clipboard=unnamed
+
+" Support for vim-surround commands ys, cs, ds, S,
+" enable it with set surround in your ~/.ideavimrc
+set surround
+
+""""""""""""""""""""""""""""""
+" Status line
+""""""""""""""""""""""""""""""
+" Always show the status line, even for one window
+set laststatus=2
+" Show line number, column number, and relative position
+" within a file in the status line
+set ruler
+" Format the status line
+" 状态栏设置：%<，行过长，则开头截短；CFD，当前文件目录，%F，显示完整路径；
+" %m，修改标志位；%r，只读标志位；%h，帮助标志位；%w，预览窗口标志位；
+" FMT，文件格式，%{&fileformat}，%{}表示计算表达式，&表示取得选项变量的值；
+" TYPE，文件类型，%Y，文件类型；%b，光标所在字符的10进制码点值，.9，最大显示9位；
+" %B，光标所在字符的16进制码点值；CWD，当前工作目录；%=，左对齐与右对齐的分界点；
+" %c，列号；%V，虚拟列号，表示为负数；%p，当前行在文件位置的百分比；
+" %P，窗口在文件位置的百分比；%%，显示%号本身；%L，文件缓冲区里的总行数。
+"set statusline=\%{HasPaste()}%F%m%r%h\ %w\ \CWD:\ %r%{getcwd()}%h\ \L%l\/\C%c
+set statusline=%<[CFP=%F]%m%r%h%w\ [FMT=%{&fileformat}]\ [TYPE=%Y]\ [%.9b\ 0x%.9B]\ [CWD=%{getcwd()}]\ %=[%l,%c%V\ %p%%\ %P\ %LLs]
+
+" %默认匹配()、[]、{}，增加匹配<>
+set matchpairs+=<:>
+
+" 快捷键映射 {
+    " facilitate screen move
+    " 滚动整屏
+    nnoremap <S-CR> <C-D><C-D>
+    "nnoremap <S-BS> <C-B>zz
+    nnoremap <S-BS> <C-U><C-U>
+    " 滚动半屏
+    nnoremap <C-CR> <C-D>
+    nnoremap <C-BS> <C-U>
+    nnoremap <C-J>  <C-D>
+    nnoremap <C-K>  <C-U>
+    "nnoremap <SPACE><SPACE> <C-D>
+    "nnoremap <S-SPACE><SPACE> <C-U>
+    " 滚动一行
+    nnoremap <C-S-CR> <C-E>gj
+    nnoremap <C-S-BS> <C-Y>gk
+    "nnoremap <DOWN>  <C-E>
+    "nnoremap <UP>    <C-Y>
+
+    " 移动光标，不滚屏（<CR>普通模式下为向下移动光标，但<BS>为逐字符移动光标）
+    nnoremap <BS> k
+
+    " redo重做命令
+    nnoremap U <C-R>
+
+    " Treat long lines as break lines（按显示行逐行移动，而非按文本行），
+    " 并且设定为文本逐行滚动，而非光标逐行移动（光标相对屏幕的位置固定不动）
+    noremap j <C-E>gj
+    noremap k <C-Y>gk
+
+    " go to older jump position(contrast with Tab or C-I)
+    noremap <S-TAB> <C-O>
+    
+    " 普通模式下，移动到当前行行首、行尾、行中
+    nnoremap <C-H> ^
+    nnoremap <C-L> $
+    noremap  0     ^
+    "noremap  -     :call cursor(line("."), col("$")/2)<CR>
+    noremap  =     $
+
+    " 将命令行前导符由冒号:改为分号;
+    "nnoremap ; :
+
+    " 插入模式、命令行模式下移动、删除
+    inoremap <C-H> <LEFT>
+    inoremap <C-J> <DOWN>
+    inoremap <C-K> <UP>
+    inoremap <C-L> <RIGHT>
+    inoremap <C-D> <DELETE>
+    cnoremap <C-H> <LEFT>
+    cnoremap <C-J> <DOWN>
+    cnoremap <C-K> <UP>
+    cnoremap <C-L> <RIGHT>
+    cnoremap <C-D> <DELETE>
+
+    " 由于Windows下的<C-A>已被映射为全选功能，因此需重映射
+    " 注：默认<C-A>为增加光标所在字符的数值或字母，<C-X>反之
+    "noremap <C-I> <C-A>  |" I，Increase
+    "noremap <C-D> <C-X>  |" D，Decrease
+
+    " 插入模式下，回车为ESC；Shift+回车为回车
+    "inoremap <S-CR> <CR>
+    "inoremap <CR> <ESC>
+
+    " i、v、c模式下，jj返回正常模式
+    inoremap jj    <ESC>
+
+    " 插入模式下，复制上、下行对应列字符
+    inoremap <C-BS> <C-Y>
+    inoremap <C-CR> <C-E>
+
+    " 切换标签页，与Windows中标签页切换的常规操作相同
+    nnoremap <C-TAB>   gt
+    nnoremap <C-S-TAB> gT
+
+    " 分屏操作(多窗口操作)
+    " 由于VimScript中的注释以一个双引号开始，有时容易与
+    " 双引号字符串中的双引号混淆(有些命令后不能跟注释，因为
+    " 字符串优先于注释)，因此，可在命令行后面的注释前加上
+    " 命令分隔符|(用于分隔放在单行上的多条Ex命令语句)，以免出错
+    noremap ,c <C-W>c  |" 关闭窗口
+    noremap ,s <C-W>s  |" 水平分割窗口
+    noremap ,v <C-W>v  |" 垂直分割窗口
+    noremap ,h <C-W>h  |" 将光标移到左边窗口
+    noremap ,j <C-W>j  |" 将光标移到下边窗口
+    noremap ,k <C-W>k  |" 将光标移到上边窗口
+    noremap ,l <C-W>l  |" 将光标移到右边窗口
+    noremap ,w <C-W>w  |" 将光标移到下一个窗口
+    noremap <F5> <C-W>w|" 将光标移到下一个窗口
+    noremap ,H <C-W>H  |" 将当前窗口移到左边
+    noremap ,J <C-W>J  |" 将当前窗口移到上边
+    noremap ,K <C-W>K  |" 将当前窗口移到下边
+    noremap ,L <C-W>L  |" 将当前窗口移到右边
+    noremap ,= <C-W>=  |" 使所有分窗口一样高
+    noremap ,+ <C-W>+  |" 增加当前窗口的高度
+    noremap ,- <C-W>-  |" 减少当前窗口的高度
+    noremap ,> <C-W>>  |" 增加当前窗口的宽度
+    noremap ,< <C-W><  |" 减少当前窗口的宽度
+    noremap ,T <C-W>T  |" 将所有分窗口转换标签
+
+    " 可视模式下缩进/反缩进可视区域(选择区域)
+    vnoremap < <gv
+    vnoremap > >gv
+
+    " 将Y映射为从光标当前位置复制到行尾，
+    " 以与D、C等大写字母的行为统一起来；
+    " 并且将复制内容回显到命令行中。
+    " 其中，echom[sg] {expr1}：回显表达式的结果，将其作为一个
+    " 真正的消息，并把该消息保存在message-history里；和echo类似，
+    " 但不可显示的字符只回显而不会被解释；@0，在命令行模式和
+    " Ex模式中，@表示寄存器，不同于普通模式中以"表示寄存器
+    nnoremap Y y$ :echom "Copied Text: " . @0<CR>h
+    nnoremap yy yy :echom "Copied Text: " . @0<CR>h
+    vnoremap y y :echom "Copied Text: " . @0<CR>
+" }
+
+" Disable highlight
+map <SPACE>h :noh<CR>
+
+" 普通模式下插入换行符
+map <SPACE><CR> i<CR><ESC>
+
+" 保存文件并退出
+map <SPACE>w :wq<CR>
+" 保存文件,不退出
+map <SPACE>s :update<CR>
+" 文件没有修改则直接退出
+map <SPACE>q :q<CR>
+" 文件没有修改则全部退出
+map <SPACE>x :qa<CR>
+
+" 普通模式下插入一个空行
+nmap <SPACE>o o<ESC>
+nmap <SPACE>O O<ESC>
+
+" 撤销上一次命令行set操作
+"map <SPACE>u :call UndoSetCommand()<CR>
+" 重复上一次命令行操作
+map <SPACE>r :@:<CR>
+
+" 普通模式下插入单个字符
+nmap <SPACE>i i <ESC>r
+nmap <SPACE>a a <ESC>r
+
+" 进入可视模式块选操作(列选操作)子模式
+nnoremap <SPACE>v <C-V>
+" 可视模式v/V子模式下，仍可切换到块选子模式
+vnoremap <SPACE>v <C-V>
+
+" n、v、o模式下粘贴"0复制专用寄存器中的内容
+noremap <SPACE>p "0p
+noremap <SPACE>P "0P
+
+" 缓冲区切换
+map <SPACE>bp :bprevious<CR>
+map <SPACE>bn :bnext<CR>
+
+" Useful mappings for managing tabs
+map <SPACE>tc :tabnew<CR>  |" tab create
+map <SPACE>ts :tab split<CR>
+map <SPACE>to :tabonly<CR>
+map <SPACE>tc :tabclose<CR>
+map <SPACE>tf :tabfirst<CR>
+map <SPACE>tl :tablast<CR>
+map <SPACE>tm :tabmove
+map <SPACE>tp :tabprevious<CR>
+map <SPACE>tn :tabnext<CR>
+" 列出所有标签页
+map <SPACE>ta :tabs<CR>
+
+" toggle case ignore（切换忽略大小写选项）
+nmap <SPACE>C :set ignorecase! ignorecase?<CR>
+
+" 可视模式下搜索选中的内容(选中内容搜索)
+" y，复制可视区域(选择区域、选择文本)；/，进入搜索命令行模式；
+" <C-R>0，粘贴"0复制专用寄存器中刚刚复制的内容；<CR>，回车执行搜索
+" 注意：必须使用vnoremap，而不能使用vmap，否则无法达到目的
+" 另外，本方法在遇到斜杠/这样的特殊字符时，无法达到目的，
+" 即使使用<C-R><C-R>也不行
+vnoremap f y/<C-R>0<CR>
+
+" Move a line of text（上下移动行、整行移动）
+" mz，设置标记z；`z，精确移动到标记z所在的行与列；
+" :m，移动整行(:[range]m[ove] {address}，把[range]指定的行移动到{address}
+" 给出的行之下)；+/-，行号加1/减1；:m+，移动当前行到下一行的下面
+" (相当于与下一行交换位置)，:m-，移动当前行到上一行的下面(相当于
+" 没有移动)，m-2，移动当前行到上两行的下面(相当于与上一行交换位置)
+nmap <SPACE>j mz:m+<CR>`z
+nmap <SPACE>k mz:m-2<CR>`z
+" '<，光标移动到上次可视区域首行行首，'>，光标移动到上次可视区域末行行首；
+" 若上次可视区域非跨多行(2行或以上)，而是单行或行内部分字符，'<和'>效果等同；
+" `<，光标移动到上次可视区域的首字符，`>，光标移动到上次可视区域的末字符；
+" 相较于'<和'>，`<和`>移动更为精确；o，可视模式下表示移动光标到可视区域的
+" 另一侧(光标在可视区域内的光标最初所在的位置与最后所在的位置之间移动)
+vmap <SPACE>j :m'>+<CR>`<my`>mzgv`yo`z
+vmap <SPACE>k :m'<-2<CR>`>my`<mzgv`yo`z
+
+" Specify the behavior when switching between buffers 
+" try和endtry：改变try和endtry之间命令的错误处理，包括所有
+" 执行的内容、source里的命令、函数调用、自动命令的激活等。
+" cat[ch] /{pattern}/：匹配{pattern}的例外抛出时，如果它没有被前一个
+" catch捕获，则执行本语句之后的命令，直到遇到和本catch处于同一try块的
+" 下一个catch、finally或者endtry为止。否则，这些命令被跳过。
+" 若没有提供{pattern}，所有的错误都会被捕获。
+try
+" 控制缓冲区切换的行为；
+" useopen，跳到第一个打开的包含指定缓冲区的窗口(如果有的话)；
+" usetab，类似于useopen，但也考虑其它标签页里的窗口；
+" split，在载入用于在quickfix命令里显示错误的缓冲区之前分割当前窗口；
+" newtab，类似于split，但打开新标签页，若和split同时存在，本值优先。
+  set switchbuf=useopen,usetab,newtab
+  " 默认值为1，即多于一个标签页才显示标签栏
+  "set showtabline=2
+catch
+endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Files backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+"set nobackup
+"set nowb
+"set noswapfile
+
+" Persistent undo（持久化撤销）文件关闭后再打开仍可撤销、恢复上次的编辑操作
+"set undodir=~/.vim/undodir
+set undofile
+" maximum number of changes that can be undone
+"set undolevels=1000  " 此为默认设置，所以注销 
+" maximum number lines to save for undo on a buffer reload
+"set undoreload=10000 " 此为默认设置，所以注销 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+" 插入模式中插入<Tab>时使用合适数量的空格，要插入实际的制表用CTRL-V<Tab>
+set expandtab
+
+" Be smart when using tabs ;)
+" 行首的<Tab>根据shiftwidth插入空白，tabstop或softtabstop用在别的地方，
+" <BS>删除行首shiftwidth那么多的空白；该选项若关闭，<Tab>总是根据tabstop
+" 或softtabstop决定插入空白的数目，shiftwidth只用于文本左移或右移。
+" 插入空白的具体方式 (制表还是空格) 取决于expandtab选项。
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+" Auto indent
+set ai
+" Smart indent
+set si
+" Wrap lines
+"set wrap  " 此为默认设置，所以注销 
+
+""""""""""""""""""""""""""""""
+" 输入法设置 
+""""""""""""""""""""""""""""""
+" 普通模式下自动禁用中文，但可接受中文标点
+set noimdisable
+" 设置输入法的激活键
+set imactivatekey=C-space
+
+"***************************************************************
+""""""""""""""""""""""""""""""
+" Helper functions
+""""""""""""""""""""""""""""""
+"" 撤销刚刚执行的set设置命令
+"" fu[nction][!] {name}([arguments]) [range] [abort] [dict]：
+"" 定义{name}命名的新函数。名字必须由字母数字和 ’_’ 字
+"" 符组成，而且必须以大写字母或者"s:"开头。
+"" 若有同名函数且没有使用[!]，给出错误信息；若给出[!]，已有的函数
+"" 被悄然替代，但该函数正在执行期间除外。此时，这是一个错误。
+"" 如果给出[range]参数，则该函数自己能理解并处理行范围。该范围通过
+"" a:firstline和a:lastline定义。如果没有[range]，:{range}call
+"" 会在该范围的每一行分别执行该函数，每次光标都定位在处理行的行首。
+"" 见|function-range-example|。
+"function! UndoSetCommand()
+"    if (@:=~? '^set\s') || (@:=~? '^se\s')
+"        exe @:.'!'
+"    endif
+"endfunction
+""""""""""""""""""""""""""""""
