@@ -11,8 +11,8 @@ set fileencodings=ucs-bom,utf-8,prc,gb18030,taiwan,japan,korea,latin1
 "if v:lang=~? '^/(zh/)/|/(ja/)/|/(ko/)'
 "    set ambiwidth=double
 "endif
-"" 解决console输出乱码
-"language messages zh_CN.utf-8
+" 解决console输出乱码
+language messages zh_CN.utf-8
 
 filetype plugin indent on
 
@@ -188,15 +188,16 @@ set matchpairs+=<:>
 
     " 由于Windows下的<C-A>已被映射为全选功能，因此需重映射
     " 注：默认<C-A>为增加光标所在字符的数值或字母，<C-X>反之
-    "noremap <C-I> <C-A>  |" I，Increase
-    "noremap <C-D> <C-X>  |" D，Decrease
+    noremap <C-I> <C-A>2h  |" I，Increase
+    noremap <C-D> <C-X>2h  |" D，Decrease
 
     " 插入模式下，回车为ESC；Shift+回车为回车
     "inoremap <S-CR> <CR>
     "inoremap <CR> <ESC>
 
-    " 插入模式下，jj返回普通模式
-    inoremap jj    <ESC>
+    " 插入模式下，jj返回普通模式（返回普通模式时总会左移一个字符）
+    inoremap jj    <ESC>h
+    inoremap <ESC> <ESC>h
 
     " 插入模式下，复制上、下行对应列字符
     inoremap <C-BS> <C-Y>
@@ -242,38 +243,57 @@ set matchpairs+=<:>
     " 真正的消息，并把该消息保存在message-history里；和echo类似，
     " 但不可显示的字符只回显而不会被解释；@0，在命令行模式和
     " Ex模式中，@表示寄存器，不同于普通模式中以"表示寄存器
-    nnoremap Y y$ :echom "Copied Text: " . @0<CR>h
+    nnoremap Y  y$ :echom "Copied Text: " . @0<CR>h
     nnoremap yy yy :echom "Copied Text: " . @0<CR>h
-    vnoremap y y :echom "Copied Text: " . @0<CR>
+    vnoremap y  y  :echom "Copied Text: " . @0<CR>
+
+    " 插入模式下在行内任意位置直接跳到行尾并补充分号（输入分号;后，马上换行）
+    inoremap <C-S-CR> <ESC>A;<CR>
+    inoremap <C-CR>   <ESC>A;<CR>
+    " 在IdeaVim中，Alt键只能简写为A，而不像Vim除了可简写为A，还可简写为M
+    "inoremap <A-CR>   <ESC>A;
+    inoremap <S-CR>   <ESC>o
+    "inoremap ;        ;<CR>
+
+    " 插入模式下的缩略简写
+    inoremap `        ->
+    inoremap ~        =>
+    inoremap <<       "<br />";
+    " 插入模式下以ss代替输入$（php中的变量前面必须有$，输入很频繁）
+    inoremap ss       $
+    
+    " 可视模式下，删除选中区域(选中文本、选中内容)然后插入新行(进入插入模式)
+    vnoremap o        do
+    vnoremap O        dO
 " }
 
 " Disable highlight
-map <SPACE>h :noh<CR>
+noremap <SPACE>h :noh<CR>
 
 " 普通模式下插入换行符
-map <SPACE><CR> i<CR><ESC>
+noremap <SPACE><CR> i<CR><ESC>
 
 " 保存文件并退出
-map <SPACE>w :wq<CR>
+noremap <SPACE>w :wq<CR>
 " 保存文件,不退出
-map <SPACE>s :update<CR>
+noremap <SPACE>s :update<CR>
 " 文件没有修改则直接退出
-map <SPACE>q :q<CR>
+noremap <SPACE>q :q<CR>
 " 文件没有修改则全部退出
-map <SPACE>x :qa<CR>
+noremap <SPACE>x :qa<CR>
 
 " 普通模式下插入一个空行
-nmap <SPACE>o o<ESC>
-nmap <SPACE>O O<ESC>
+nnoremap <SPACE>o o<ESC>
+nnoremap <SPACE>O O<ESC>
 
 " 撤销上一次命令行set操作
 "map <SPACE>u :call UndoSetCommand()<CR>
 " 重复上一次命令行操作
-map <SPACE>r :@:<CR>
+noremap <SPACE>r :@:<CR>
 
 " 普通模式下插入单个字符
-nmap <SPACE>i i <ESC>r
-nmap <SPACE>a a <ESC>r
+nnoremap <SPACE>i i <ESC>r
+nnoremap <SPACE>a a <ESC>r
 
 " 进入可视模式块选操作(列选操作)子模式
 nnoremap <SPACE>v <C-V>
@@ -285,24 +305,24 @@ noremap <SPACE>p "0p
 noremap <SPACE>P "0P
 
 " 缓冲区切换
-map <SPACE>bp :bprevious<CR>
-map <SPACE>bn :bnext<CR>
+noremap <SPACE>bp :bprevious<CR>
+noremap <SPACE>bn :bnext<CR>
 
-" Useful mappings for managing tabs
-map <SPACE>tc :tabnew<CR>  |" tab create
-map <SPACE>ts :tab split<CR>
-map <SPACE>to :tabonly<CR>
-map <SPACE>tc :tabclose<CR>
-map <SPACE>tf :tabfirst<CR>
-map <SPACE>tl :tablast<CR>
-map <SPACE>tm :tabmove
-map <SPACE>tp :tabprevious<CR>
-map <SPACE>tn :tabnext<CR>
+" Useful noremappings for managing tabs
+noremap <SPACE>tc :tabnew<CR>  |" tab create
+noremap <SPACE>ts :tab split<CR>
+noremap <SPACE>to :tabonly<CR>
+noremap <SPACE>tc :tabclose<CR>
+noremap <SPACE>tf :tabfirst<CR>
+noremap <SPACE>tl :tablast<CR>
+noremap <SPACE>tm :tabmove
+noremap <SPACE>tp :tabprevious<CR>
+noremap <SPACE>tn :tabnext<CR>
 " 列出所有标签页
-map <SPACE>ta :tabs<CR>
+noremap <SPACE>ta :tabs<CR>
 
 " toggle case ignore（切换忽略大小写选项）
-nmap <SPACE>C :set ignorecase! ignorecase?<CR>
+nnoremap <SPACE>C :set ignorecase! ignorecase?<CR>
 
 " 可视模式下搜索选中的内容(选中内容搜索)
 " y，复制可视区域(选择区域、选择文本)；/，进入搜索命令行模式；
@@ -318,15 +338,15 @@ vnoremap f y/<C-R>0<CR>
 " 给出的行之下)；+/-，行号加1/减1；:m+，移动当前行到下一行的下面
 " (相当于与下一行交换位置)，:m-，移动当前行到上一行的下面(相当于
 " 没有移动)，m-2，移动当前行到上两行的下面(相当于与上一行交换位置)
-nmap <SPACE>j mz:m+<CR>`z
-nmap <SPACE>k mz:m-2<CR>`z
+nnoremap <SPACE>j mz:m+<CR>`z
+nnoremap <SPACE>k mz:m-2<CR>`z
 " '<，光标移动到上次可视区域首行行首，'>，光标移动到上次可视区域末行行首；
 " 若上次可视区域非跨多行(2行或以上)，而是单行或行内部分字符，'<和'>效果等同；
 " `<，光标移动到上次可视区域的首字符，`>，光标移动到上次可视区域的末字符；
 " 相较于'<和'>，`<和`>移动更为精确；o，可视模式下表示移动光标到可视区域的
 " 另一侧(光标在可视区域内的光标最初所在的位置与最后所在的位置之间移动)
-vmap <SPACE>j :m'>+<CR>`<my`>mzgv`yo`z
-vmap <SPACE>k :m'<-2<CR>`>my`<mzgv`yo`z
+vnoremap <SPACE>j :m'>+<CR>`<my`>mzgv`yo`z
+vnoremap <SPACE>k :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Specify the behavior when switching between buffers 
 " try和endtry：改变try和endtry之间命令的错误处理，包括所有
